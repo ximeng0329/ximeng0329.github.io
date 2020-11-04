@@ -1,0 +1,71 @@
+---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(leaflet)
+library(plotly)
+library(flexdashboard)
+```
+
+```{r}
+data("ny_noaa") # I choose the NOAA data set
+noaa = 
+  ny_noaa %>% 
+  mutate(
+  tmax = as.numeric(tmax),    # first change the tmax and tmin columns to numeric
+  tmin = as.numeric(tmin)) %>%              
+  drop_na(tmax) %>%           # drop data with missing values of tmax
+  drop_na(tmin) %>%           # drop data with missing values of tmin
+  filter(!prcp == 0) %>%      # only keep days that have precipitation
+  filter(!snow == 0) %>%      # only keep days that have snowfall
+  filter(!snwd == 0) %>%  
+  separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
+  select(-month, -day) %>%
+  filter(year %in% c(1985, 1990, 1995, 2000))      # only select five years so I can compare changes every five years
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+plot1 = noaa %>%         # the first plot is intend to show the average maximum temperature while snowing/raining for all five years and to see the trends
+  group_by(id, year) %>% 
+  mutate(mean_tmax = mean(tmax)) %>%
+  plot_ly(y = ~mean_tmax, x = ~year, color = ~year, type = "box")
+plot1
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+plot2 = noaa %>%  # the second plot is intend to compare the maximum and minimum temperature while snowing in year 1990 and 2000
+  filter(year %in% c(1990, 2000)) %>%
+  group_by(year) %>%
+  plot_ly(y = ~tmax, x = ~tmin, color = ~year, type = "scatter", alpha = 0.4)
+plot2
+```
+
+### Chart C
+
+```{r}
+plot3 = noaa %>%  # the third plot is showing snow depth changes every five years from 1985 to 2000
+  group_by(year) %>%
+  mutate(mean_snwd = mean(snwd)) %>%
+  plot_ly(y = ~snwd, x = ~year, color = ~year, type = "bar")
+plot3
+```
+

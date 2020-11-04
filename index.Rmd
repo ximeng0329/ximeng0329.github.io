@@ -16,5 +16,8 @@ adttional information
 ## Links to my linkedin
 [Linkedin](https://www.linkedin.com/in/ximeng-zhao-761234142/)
 
+## Links to my instagram
+[Instagram](https://www.instagram.com/xim0329/)
+
 ## Links to page within site
 [About me](about.html)
