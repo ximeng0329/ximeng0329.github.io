@@ -8,8 +8,8 @@ output:
 ---
 
 # This is Ximeng's website
+<img src="images/cocktail.jpeg">
 
-![](https://media.giphy.com/media/drXGoW1iudhKw/giphy.gif)
 # Here is a subsection
 adttional information 
 
