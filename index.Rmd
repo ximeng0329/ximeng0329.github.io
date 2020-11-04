@@ -7,6 +7,12 @@ output:
     theme: cerulean
 ---
 
-# This is Jeff's awesome website
+# This is Ximeng's website
 
 ![](https://media.giphy.com/media/drXGoW1iudhKw/giphy.gif)
+## Links to my linkedin
+Here is my linkedin page
+* [Linkedin](https://www.linkedin.com/in/ximeng-zhao-761234142/)
+
+## Links to page within site
+[About me](about.html)
