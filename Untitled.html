@@ -11,7 +11,7 @@
 
 
 
-<title>About</title>
+<title>Dashboard</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -303,15 +303,52 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About</h1>
+<h1 class="title toc-ignore">Dashboard</h1>
 
 </div>
 
 
-<div id="about-this-site" class="section level3">
-<h3>About this site</h3>
-<p>Sometimes you need to say a bit about the site – how it was made, where it’s hosted, where the source code can be found.</p>
-<p>If this is for a project or analysis, I recommend giving some details about the R package versions that you used to create the content.</p>
+<pre class="r"><code>data(&quot;ny_noaa&quot;)
+noaa = 
+  ny_noaa %&gt;% 
+  mutate(
+  tmax = as.numeric(tmax), 
+  tmin = as.numeric(tmin),
+  prcp = prcp) %&gt;%
+  drop_na(tmax) %&gt;%
+  drop_na(tmin) %&gt;%
+  filter(!prcp == 0) %&gt;%
+  filter(!snow == 0) %&gt;%
+  filter(!snwd == 0) %&gt;%
+  separate(date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), convert = TRUE) %&gt;%
+  select(-month, -day) %&gt;%
+  filter(year %in% c(1985, 1990, 1995, 2000))</code></pre>
+<div id="column" class="section level2" data-width="650">
+<h2>Column</h2>
+<div id="chart-a" class="section level3">
+<h3>Chart A</h3>
+<pre class="r"><code>tmax_year = noaa %&gt;%
+  group_by(id, year) %&gt;%
+  mutate(mean_tmax = mean(tmax)) %&gt;%
+  plot_ly(y = ~mean_tmax, x = ~year, color = ~year, type = &quot;box&quot;)</code></pre>
+</div>
+</div>
+<div id="column-1" class="section level2" data-width="350">
+<h2>Column</h2>
+<div id="chart-b" class="section level3">
+<h3>Chart B</h3>
+<pre class="r"><code>min_max = noaa %&gt;%
+  filter(year %in% c(1990, 2000)) %&gt;%
+  group_by(id, year) %&gt;%
+  plot_ly(y = ~tmax, x = ~tmin, color = ~year, type = &quot;scatter&quot;, alpha = 0.4)</code></pre>
+</div>
+<div id="chart-c" class="section level3">
+<h3>Chart C</h3>
+<pre class="r"><code>snwd_year = noaa %&gt;%
+  group_by(year) %&gt;%
+  mutate(mean_snwd = mean(snwd)) %&gt;%
+  plot_ly(y = ~snwd, x = ~year, color = ~year, type = &quot;bar&quot;)</code></pre>
+</div>
 </div>
 
 

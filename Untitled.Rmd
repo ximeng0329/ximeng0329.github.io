@@ -1,0 +1,68 @@
+---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(leaflet)
+library(plotly)
+library(flexdashboard)
+```
+
+```{r}
+data("ny_noaa")
+noaa = 
+  ny_noaa %>% 
+  mutate(
+  tmax = as.numeric(tmax), 
+  tmin = as.numeric(tmin),
+  prcp = prcp) %>%
+  drop_na(tmax) %>%
+  drop_na(tmin) %>%
+  filter(!prcp == 0) %>%
+  filter(!snow == 0) %>%
+  filter(!snwd == 0) %>%
+  separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
+  select(-month, -day) %>%
+  filter(year %in% c(1985, 1990, 1995, 2000))
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+renderPlotly( noaa %>%
+  group_by(id, year) %>%
+  mutate(mean_tmax = mean(tmax)) %>%
+  plot_ly(y = ~mean_tmax, x = ~year, color = ~year, type = "box"))
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+renderPlotly(noaa %>%
+  filter(year %in% c(1990, 2000)) %>%
+  group_by(id, year) %>%
+  plot_ly(y = ~tmax, x = ~tmin, color = ~year, type = "scatter", alpha = 0.4))
+```
+
+### Chart C
+
+```{r}
+renderPlotly(noaa %>%
+  group_by(year) %>%
+  mutate(mean_snwd = mean(snwd)) %>%
+  plot_ly(y = ~snwd, x = ~year, color = ~year, type = "bar"))
+```
