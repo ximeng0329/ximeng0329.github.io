@@ -36,7 +36,7 @@ Column {data-width=650}
 
 ### Chart A
 
-```{r echo=FALSE}
+```{r echo=FALSE, warning=FALSE}
 plot1 = noaa %>%         # the first plot is intend to show the average maximum temperature while snowing/raining for all five years and to see the trends
   group_by(id, year) %>% 
   mutate(mean_tmax = mean(tmax)) %>%
@@ -49,7 +49,7 @@ Column {data-width=350}
 
 ### Chart B
 
-```{r echo=FALSE}
+```{r echo=FALSE, message = FALSE}
 plot2 = noaa %>%  # the second plot is intend to compare the maximum and minimum temperature while snowing in year 1990 and 2000
   filter(year %in% c(1990, 2000)) %>%
   group_by(year) %>%
@@ -59,7 +59,7 @@ plot2
 
 ### Chart C
 
-```{r echo=FALSE }
+```{r echo=FALSE, warning = FALSE}
 plot3 = noaa %>%  # the third plot is showing snow depth changes every five years from 1985 to 2000
   group_by(year) %>%
   mutate(mean_snwd = mean(snwd)) %>%
