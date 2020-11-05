@@ -13,11 +13,12 @@ output:
 # Here is a subsection
 adttional information 
 
-## Links to my linkedin
-[Linkedin](https://www.linkedin.com/in/ximeng-zhao-761234142/)
-
-## Links to my instagram
+## Links to my other websites
+[Linkedin](https://www.linkedin.com/in/ximeng-zhao-761234142/) 
 [Instagram](https://www.instagram.com/xim0329/)
+
+## My resume
+[Resume](resume.html)
 
 ## Links to page within site
 [About me](about.html)

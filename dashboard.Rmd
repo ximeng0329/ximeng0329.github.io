@@ -4,7 +4,6 @@ output:
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
-    source: embed
 runtime: shiny
 ---
 
@@ -16,15 +15,14 @@ library(plotly)
 library(flexdashboard)
 ```
 
-```{r}
+```{r echo=FALSE}
 data("ny_noaa") # I choose the NOAA data set
 noaa = 
   ny_noaa %>% 
   mutate(
   tmax = as.numeric(tmax),    # first change the tmax and tmin columns to numeric
   tmin = as.numeric(tmin)) %>%              
-  drop_na(tmax) %>%           # drop data with missing values of tmax
-  drop_na(tmin) %>%           # drop data with missing values of tmin
+  drop_na() %>%          
   filter(!prcp == 0) %>%      # only keep days that have precipitation
   filter(!snow == 0) %>%      # only keep days that have snowfall
   filter(!snwd == 0) %>%  
@@ -38,11 +36,11 @@ Column {data-width=650}
 
 ### Chart A
 
-```{r}
+```{r echo=FALSE}
 plot1 = noaa %>%         # the first plot is intend to show the average maximum temperature while snowing/raining for all five years and to see the trends
   group_by(id, year) %>% 
   mutate(mean_tmax = mean(tmax)) %>%
-  plot_ly(y = ~mean_tmax, x = ~year, color = ~year, type = "box")
+  plot_ly(y = ~mean_tmax, x = ~year, type = "box")
 plot1
 ```
 
@@ -51,7 +49,7 @@ Column {data-width=350}
 
 ### Chart B
 
-```{r}
+```{r echo=FALSE}
 plot2 = noaa %>%  # the second plot is intend to compare the maximum and minimum temperature while snowing in year 1990 and 2000
   filter(year %in% c(1990, 2000)) %>%
   group_by(year) %>%
@@ -61,7 +59,7 @@ plot2
 
 ### Chart C
 
-```{r}
+```{r echo=FALSE }
 plot3 = noaa %>%  # the third plot is showing snow depth changes every five years from 1985 to 2000
   group_by(year) %>%
   mutate(mean_snwd = mean(snwd)) %>%
